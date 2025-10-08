@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BukuPedia – Cari Buku Kesukaanmu!</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="bg-animation"></div>
+
+    <!-- 🔝 Navbar -->
+    <header class="navbar">
+      <div class="logo">📚 BukuPedia</div>
+      <button id="darkToggle" class="toggle-btn">
+        <span id="modeIcon">☀️</span>
+        <span id="modeText">Mode Terang</span>
+      </button>
+    </header>
+
+    <!-- 🦸 Hero Section -->
+    <section class="hero-section">
+      <h1>Temukan Buku Favoritmu</h1>
+      <p class="subtitle">
+        Jelajahi jutaan buku dari seluruh dunia dengan mudah!
+      </p>
+
+      <div class="search-container">
+        <div class="search-bar">
+          <input
+            type="text"
+            id="search"
+            placeholder="Cari judul, penulis, atau topik..."
+          />
+          <button id="searchBtn" class="search-btn">Cari Buku</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 📘 Rekomendasi -->
+    <main id="recommendationSection" class="container">
+      <h2 class="section-title">📘 Rekomendasi Pilihan</h2>
+      <div id="recommended" class="book-list slider"></div>
+    </main>
+
+    <!-- 🔍 Hasil Pencarian -->
+    <section class="container">
+      <h2 id="searchTitle" class="section-title">🔍 Hasil Pencarian</h2>
+      <div id="book-list" class="book-list"></div>
+      <div id="loading" class="hidden">Loading...</div>
+    </section>
+
+    <!-- 🧾 Footer -->
+    <footer>
+      <p>Made with ❤️ by Kelompok 6 | Copyright 2025</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

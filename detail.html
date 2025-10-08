@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Buku | BukuPedia</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        margin: 0;
+        background-color: #f4f6f8;
+        color: #333;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #2c3e50;
+        color: #fff;
+        padding: 1rem 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .toggle-btn {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .container {
+        max-width: 960px;
+        margin: 2rem auto;
+        padding: 1rem;
+      }
+
+      .detail-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .detail-container img {
+        max-width: 300px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .detail-info {
+        flex: 1;
+      }
+
+      .detail-info h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .detail-info p {
+        margin: 0.5rem 0;
+        line-height: 1.6;
+      }
+
+      .loading {
+        text-align: center;
+        font-size: 1.2rem;
+        margin-top: 2rem;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1rem;
+        background-color: #ecf0f1;
+        font-size: 0.9rem;
+        margin-top: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">📚 CariBuku</div>
+      <div class="nav-actions">
+        <button class="toggle-btn" onclick="goHome()">🏠 Beranda</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <div id="book-detail" class="book-detail hidden"></div>
+      <div id="loading" class="loading">⏳ Memuat detail buku...</div>
+    </main>
+
+    <footer>
+      <p>Made with ❤️ by Kelompok 6 | Copyright 2025</p>
+    </footer>
+
+    <script>
+      async function loadDetail() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        if (!id) return;
+
+        const loadingEl = document.getElementById("loading");
+        const detailEl = document.getElementById("book-detail");
+
+        loadingEl.classList.remove("hidden");
+
+        try {
+          const res = await fetch(`https://openlibrary.org/works/${id}.json`);
+          const data = await res.json();
+
+          const cover = data.covers
+            ? `https://covers.openlibrary.org/b/id/${data.covers[0]}-L.jpg`
+            : "https://via.placeholder.com/300x400?text=No+Cover";
+
+          const description = data.description
+            ? typeof data.description === "string"
+              ? data.description
+              : data.description.value
+            : "Tidak ada deskripsi.";
+
+          const subjects = data.subjects
+            ? data.subjects.join(", ")
+            : "Tidak tersedia.";
+          const createdDate = data.created
+            ? new Date(data.created.value).toLocaleDateString("id-ID")
+            : "Tidak diketahui";
+
+          detailEl.innerHTML = `
+            <div class="detail-container">
+              <img src="${cover}" alt="${data.title}" />
+              <div class="detail-info">
+                <h1>${data.title}</h1>
+                <p><strong>Deskripsi:</strong> ${description}</p>
+                <p><strong>Subjek:</strong> ${subjects}</p>
+                <p><strong>Dibuat pada:</strong> ${createdDate}</p>
+              </div>
+            </div>
+          `;
+
+          detailEl.classList.remove("hidden");
+        } catch (error) {
+          detailEl.innerHTML = `<p class="error">❌ Gagal memuat detail buku.</p>`;
+        } finally {
+          loadingEl.classList.add("hidden");
+        }
+      }
+
+      function goHome() {
+        window.location.href = "index.html";
+      }
+
+      loadDetail();
+    </script>
+  </body>
+</html>
